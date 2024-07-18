@@ -1,0 +1,57 @@
+#heres the code for linear regression
+#all credits go to krish naik YT, please check out his channel , the code is almost the exact same
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np 
+
+from sklearn.datasets import load_iris
+#toydataset iris.
+
+df= load_iris()
+dataset= pd.DataFrame(df.data)
+dataset.columns=df.feature_names
+dataset.head()
+
+x= dataset
+y=df.target
+
+#train test split
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(
+    x, y, test_size=.30, random_state=42)
+
+#implementation of linear regression 
+
+#standardizing the dataset
+
+from sklearn.preprocessing import StandardScaler
+scaler= StandardScaler()
+
+x_train= scaler.fit_transform(x_train)
+x_test=scaler.transform(x_test)
+
+
+from sklearn.linear_model import LinearRegression
+
+from sklearn.model_selection import cross_val_score
+
+
+regression= LinearRegression()
+mse= cross_val_score(regression, x_train, y_train, scoring='neg_mean_squared_error',cv=6)
+regression.fit(x_train,y_train)
+np.mean(mse) #mean of the mse, should be minimised, this is the difference in predicted and truth value)
+
+reg_pred=regression.predict(x_test)
+reg_pred
+
+#ytest is our truth value, !remember
+
+import seaborn as sns
+sns.displot(reg_pred-y_test, kind= 'kde')
+
+
+from sklearn.metrics import r2_score
+
+score=r2_score(reg_pred ,y test)
