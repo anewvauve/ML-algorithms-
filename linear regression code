@@ -1,0 +1,75 @@
+#Ml from krish naik
+#linear regression
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np 
+
+from sklearn.datasets import load_iris
+#toydataset iris.
+
+df= load_iris()
+dataset= pd.DataFrame(df.data)
+dataset.columns=df.feature_names
+dataset.head()
+
+x= dataset
+y=df.target
+
+#train test split
+
+
+p = x[['sepal length (cm)']]
+y = x[['petal length (cm)']]
+
+plt.scatter(p, y)
+
+#applying regression to find best fit line. 
+#we ought to minimize the error in slope and intercept.
+
+from sklearn.linear_model import LinearRegression
+
+#traintestsplitting, so that we can measure the accuracy henceforth. 
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(p, y, test_size=0.30)
+
+
+lr= LinearRegression()
+
+
+x_train  = np.array(x_train).reshape(-1,1) #indep data should be in 2D for consisitency issues
+
+
+lr.fit(x_train, y_train)
+
+m= lr.coef_   #slopeand intercept of our best fit line from the given training data
+c= lr.intercept_
+
+y_pred= m*x_train + c
+
+y_pred
+
+plt.plot(x_train, y_pred, c='red')  #to check the training data.
+
+#now we test the model for its accuracy
+
+y_pred2= (m)*x_test + c  #to check the accuracy
+
+plt.plot(x_test, y_pred2, c='yellow')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
